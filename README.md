@@ -6,4 +6,4 @@ You can download or clone this repository and open the project in Xcode. The app
 
 When you run the app, you will be presented with a screen with four flags. Tap on the flag which you think is the correct answer. If you are correct, you will be awarded one point and the score will be displayed on the screen. If you are wrong, the correct answer will be displayed and you will not be awarded any points.
 
-After every question, the options will be shuffled and a new set of flags will be displayed. The game ends after seven questions and your final score will be displayed on the screen.
+After every question, the options will be shuffled and a new set of flags will be displayed. The game ends after eight questions and your final score will be displayed on the screen.
