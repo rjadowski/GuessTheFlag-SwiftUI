@@ -12,9 +12,11 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     @State private var score = 0
-    @State private var questionNumber = 0
+    @State private var questionNumber = 1
+    @State private var usedCountries = [String]()
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...3)
+    @State private var uniqueCountry = ""
     
     var body: some View {
         ZStack {
@@ -75,13 +77,13 @@ struct ContentView: View {
         }
         // Display an alert after the user taps a flag button
         .alert(scoreTitle, isPresented: $showingScore) {
-            if questionNumber < 7 {
+            if questionNumber < 8 {
                 Button("Continue", action: askQuestion)
             } else {
                 Button("Restart", action: restartGame)
             }
         } message: {
-            if questionNumber < 7 {
+            if questionNumber < 8 {
                 Text("Your score is \(score)")
             } else {
                 Text("Final score: \(score)")
@@ -91,6 +93,8 @@ struct ContentView: View {
 
     // Method that is called when a flag button is tapped
     func flagTapped(_ number: Int) {
+        // Add correct answer to array of used countries
+        usedCountries.append("\(countries[correctAnswer])")
         if number == correctAnswer {
             score += 1
             scoreTitle = "Correct"
@@ -102,15 +106,32 @@ struct ContentView: View {
 
     // Method that is called to update the question and shuffle the flag options
     func askQuestion() {
+        if questionNumber == 8 {
+            showingScore = true
+            scoreTitle = "Final score: \(score)"
+            return
+        }
+        
+        // Shuffle the countries and generate a unique answer for the next question by checking
+        // that the new answer hasn't been used before
+        repeat {
+            countries.shuffle()
+            correctAnswer = Int.random(in: 0...3)
+            uniqueCountry = countries[correctAnswer]
+        } while usedCountries.contains(uniqueCountry)
+
+        //  Update the question number
         questionNumber += 1
-        countries.shuffle()
-        correctAnswer = Int.random(in: 0...3)
+        print(questionNumber)
     }
+
+
 
     // Method that is called to restart the game
     func restartGame() {
-        questionNumber = 1
+        questionNumber = 0
         score = 0
+        usedCountries = []
         askQuestion()
     }
 }
