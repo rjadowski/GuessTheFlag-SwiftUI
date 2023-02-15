@@ -122,7 +122,6 @@ struct ContentView: View {
 
         //  Update the question number
         questionNumber += 1
-        print(questionNumber)
     }
 
 
